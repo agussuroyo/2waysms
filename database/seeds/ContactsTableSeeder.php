@@ -14,18 +14,15 @@ class ContactsTableSeeder extends Seeder
     public function run()
     {
         //
-		factory(Contact::class, 100)->create()->each(function($contact){
-			
-			$id = $contact->id;
-			
+		factory(Contact::class, 100)->create()->each(function($contact){			
 			$message = factory(Message::class)->make([
-				'from' => $id
+				'from' => $contact->number
 			]);
 			
 			$contact->messages()->save($message);
 			
 			$sent = factory(Message::class)->make([
-				'to' => $id
+				'to' => $contact->number
 			]);
 			$contact->sent()->save($sent);
 		});

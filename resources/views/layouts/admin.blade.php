@@ -4,6 +4,7 @@
 		<!-- Required meta tags -->
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="csrf-token" content="{{ csrf_token() }}">
 		<title>{{ config('app.name', '2WaySMS') }}</title>
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="{{ asset('concept/assets/vendor/bootstrap/css/bootstrap.min.css') }}">
@@ -71,7 +72,7 @@
 									</a>
 								</li>								
 								<li class="nav-item ">
-									<a class="nav-link {{ Request::segment(1) == 'bulk' ? 'active' : '' }}" href="{{ route('sms') }}">
+									<a class="nav-link {{ Request::segment(1) == 'bulk' ? 'active' : '' }}" href="{{ route('message.create') }}">
 										<i class="fa fa-fw fa-envelope"></i>
 										Send SMS
 									</a>

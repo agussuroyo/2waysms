@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Message;
-use Exception;
+use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Twilio\Rest\Client;
-use function config;
 use function view;
 
 class MessageController extends Controller {
+
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct() {
+		$this->middleware( 'auth' );
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -28,6 +34,7 @@ class MessageController extends Controller {
 	 */
 	public function create() {
 		//
+		return view( 'sms', [ 'number' => '' ] );
 	}
 
 	/**
@@ -81,54 +88,8 @@ class MessageController extends Controller {
 		//
 	}
 
-	public function to( Request $request, $id ) {
-
-		return view( 'sms', array(
-			'number' => \App\Contact::find( $id )->number
-				) );
-	}
-
-	public function sms( Request $request ) {
-		return view( 'sms', array(
-			'number' => ''
-		) );
-	}
-
-	public function send( Request $request ) {
-
-		$sid	 = config( 'twilio.sid' );
-		$token	 = config( 'twilio.token' );
-
-		try {
-
-			$client	 = new Client( $sid, $token );
-			$numbers = explode( PHP_EOL, $request->get( 'numbers' ) );
-			$numbers = array_map( 'trim', $numbers );
-			$message = $request->get( 'message' );
-
-			foreach ( $numbers as $num ) {
-				if ( strpos( $num, '+' ) !== false ) {
-					$num = "+{$num}";
-				}
-
-				$client->messages->create( $num, array(
-					'from'	 => config( 'twilio.number' ),
-					'body'	 => $message
-				) );
-			}
-
-			$response = [
-				'code'		 => 200,
-				'message'	 => 'OK'
-			];
-		} catch ( Exception $ex ) {
-			$response = [
-				'code'		 => $ex->getCode(),
-				'message'	 => $ex->getMessage()
-			];
-		}
-
-		return $response;
+	public function to( Request $request, Contact $contact ) {
+		return view( 'sms', $contact );
 	}
 
 	public function receiver( Request $request ) {

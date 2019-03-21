@@ -25,7 +25,4 @@ Route::resource('account', 'AccountController');
 Route::resource('message', 'MessageController');
 
 Route::put('/change-password/{id}', 'AccountController@changePassword')->name('change.password');
-Route::get('/sms', 'MessageController@sms')->name('sms');
-Route::get('/sms/{id}', 'MessageController@to')->name('sms.to');
-
-Route::any('/receiver', 'MessgeController@receiver')->name('receiver');
+Route::get('/message/create/{contact}', 'MessageController@to')->name('sms.to');

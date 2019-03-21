@@ -13,7 +13,5 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         factory(User::class, 50)->create();
-		
-		$this->call(ContactsTableSeeder::class);
     }
 }

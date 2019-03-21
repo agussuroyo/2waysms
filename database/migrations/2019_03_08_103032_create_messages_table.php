@@ -15,11 +15,11 @@ class CreateMessagesTable extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->bigIncrements('id');
-			$table->string('tw_id');
-			$table->unsignedBigInteger('from');
-			$table->unsignedBigInteger('to');
+			$table->string('tw_id')->nullable();
+			$table->string('from');
+			$table->string('to');
 			$table->text('message')->nullable();
-			$table->unsignedInteger('status');
+			$table->unsignedInteger('status')->default(0);
             $table->timestamps();
         });
     }
